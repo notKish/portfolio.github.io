@@ -3,7 +3,7 @@ import { ripple } from '@ripple-ts/vite-plugin';
 
 export default defineConfig({
   plugins: [ripple()],
-  base: '/',
+  base: '/portfolio.github.io/',
   build: {
     outDir: 'docs'
   }
