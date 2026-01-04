@@ -1,0 +1,78 @@
+import { track, effect } from 'ripple';
+import { initTheme, updateTheme, type Theme } from './lib/theme';
+import { Navigation } from './components/Navigation.ripple';
+import { Home } from './pages/Home.ripple';
+import { Blog } from './pages/Blog.ripple';
+import { BlogPost } from './pages/BlogPost.ripple';
+
+export component App() {
+  let currentPage = track<'home' | 'blog' | 'post'>('home');
+  let currentPostId = track<string | null>(null);
+  let theme = initTheme();
+
+  function navigate(page: 'home' | 'blog', postId?: string) {
+    @currentPage = page;
+    if (postId) {
+      @currentPage = 'post';
+      @currentPostId = postId;
+    } else {
+      @currentPostId = null;
+    }
+    window.scrollTo(0, 0);
+  }
+
+  function toggleTheme() {
+    @theme = @theme === 'light' ? 'dark' : 'light';
+    updateTheme(@theme);
+  }
+
+  effect(() => {
+    updateTheme(@theme);
+  });
+
+  <div class="app">
+    <Navigation navigate={navigate} currentPage={@currentPage} theme={@theme} toggleTheme={toggleTheme} />
+    
+    <main class="main-content">
+      if (@currentPage === 'home') {
+        <Home theme={@theme} />
+      } else if (@currentPage === 'blog') {
+        <Blog navigate={navigate} />
+      } else if (@currentPage === 'post' && @currentPostId) {
+        <BlogPost postId={@currentPostId} navigate={navigate} />
+      }
+    </main>
+  </div>
+
+  <style>
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: var(--bg-primary);
+      background-attachment: fixed;
+      transition: background-color 0.3s ease;
+    }
+
+    .main-content {
+      flex: 1;
+      width: 100%;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 3rem;
+    }
+
+    @media (max-width: 968px) {
+      .main-content {
+        padding: 0 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-content {
+        padding: 0 1.5rem;
+      }
+    }
+  </style>
+}
+

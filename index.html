@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ganesh Walunj - Developer Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script>
+      // Wait for highlight.js to load and configure common languages
+      if (typeof window !== 'undefined') {
+        window.addEventListener('load', () => {
+          if (window.hljs) {
+            // Register common languages (highlight.js might auto-register but this ensures it)
+            window.hljs.highlightAll();
+          }
+        });
+      }
+    </script>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      
+      :root {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        font-synthesis: none;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      
+      :root[data-theme="light"] {
+        --bg-primary: #ffffff;
+        --bg-secondary: #f5f5f5;
+        --bg-card: #ffffff;
+        --text-primary: #1a1a1a;
+        --text-secondary: #4b5563;
+        --text-tertiary: #6b7280;
+        --border-color: #e5e7eb;
+        --accent-color: #eab308;
+        --accent-hover: #ca8a04;
+        --shadow: rgba(0, 0, 0, 0.05);
+        --shadow-hover: rgba(234, 179, 8, 0.15);
+        --code-bg: #1a1a1a;
+        --code-text: #e4e4e7;
+        --code-border: #2d2d2d;
+        --icon-brightness: 1;
+      }
+      
+      :root[data-theme="dark"] {
+        --bg-primary: #0a0a0a;
+        --bg-secondary: #141414;
+        --bg-card: #1a1a1a;
+        --text-primary: #f5f5f5;
+        --text-secondary: #d4d4d4;
+        --text-tertiary: #a3a3a3;
+        --border-color: #262626;
+        --accent-color: #facc15;
+        --accent-hover: #eab308;
+        --shadow: rgba(0, 0, 0, 0.3);
+        --shadow-hover: rgba(250, 204, 21, 0.2);
+        --code-bg: #0f0f0f;
+        --code-text: #e4e4e7;
+        --code-border: #262626;
+        --icon-brightness: 1.2;
+      }
+      
+      /* Highlight.js base styles */
+      .hljs {
+        color: var(--code-text);
+        background: var(--code-bg) !important;
+        transition: color 0.3s ease, background 0.3s ease;
+      }
+      
+      /* Keywords (if, else, function, const, let, var, return, etc.) */
+      .hljs-keyword,
+      .hljs-selector-tag,
+      .hljs-literal,
+      .hljs-section,
+      .hljs-link {
+        color: var(--accent-color);
+        font-weight: 600;
+      }
+      
+      /* Strings */
+      .hljs-string,
+      .hljs-attr,
+      .hljs-symbol,
+      .hljs-bullet {
+        color: #10b981;
+      }
+      
+      /* Comments */
+      .hljs-comment,
+      .hljs-quote,
+      .hljs-deletion {
+        color: var(--text-tertiary);
+        font-style: italic;
+      }
+      
+      /* Functions */
+      .hljs-function,
+      .hljs-title,
+      .hljs-title.function_ {
+        color: #3b82f6;
+      }
+      
+      /* Numbers */
+      .hljs-number {
+        color: #f59e0b;
+      }
+      
+      /* Variables */
+      .hljs-variable,
+      .hljs-template-variable {
+        color: var(--code-text);
+      }
+      
+      /* Operators */
+      .hljs-operator {
+        color: var(--accent-color);
+      }
+      
+      /* Punctuation */
+      .hljs-punctuation {
+        color: var(--text-secondary);
+      }
+      
+      /* Built-in functions and classes */
+      .hljs-built_in,
+      .hljs-builtin-name {
+        color: #ec4899;
+      }
+      
+      /* Type annotations */
+      .hljs-type {
+        color: var(--accent-color);
+      }
+      
+      /* HTML/CSS attributes */
+      .hljs-attr {
+        color: #10b981;
+      }
+      
+      /* HTML tags */
+      .hljs-tag {
+        color: #ef4444;
+      }
+      
+      /* Regex */
+      .hljs-regexp {
+        color: #10b981;
+      }
+      
+      /* Emphasis */
+      .hljs-emphasis {
+        font-style: italic;
+      }
+      
+      .hljs-strong {
+        font-weight: bold;
+      }
+      
+      /* Meta */
+      .hljs-meta,
+      .hljs-meta-keyword {
+        color: var(--text-tertiary);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/index.ts"></script>
+  </body>
+</html>

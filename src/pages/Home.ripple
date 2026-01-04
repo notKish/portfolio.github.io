@@ -1,0 +1,479 @@
+import type { Theme } from '../lib/theme';
+import { Icon } from '../components/Icon.ripple';
+import { skills } from '../data/skills';
+import { projects } from '../data/projects';
+
+export component Home(props: { theme: Theme }) {
+  <div class="home">
+    <section class="hero">
+      <div class="hero-content">
+        <h1 class="hero-name">
+          {"GANESH WALUNJ"}
+        </h1>
+        <h2 class="hero-title">
+          {"SOFTWARE ENGINEER"}
+        </h2>
+        <p class="hero-description">
+          {"Passionate about creating intuitive and engaging user experiences. "}
+          {"Specialize in transforming ideas into beautifully crafted products."}
+        </p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number">{"+3"}</div>
+            <div class="stat-label">{"YEARS OF EXPERIENCE"}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{"+10"}</div>
+            <div class="stat-label">{"PROJECTS COMPLETED"}</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">{"+5"}</div>
+            <div class="stat-label">{"WORLDWIDE CLIENTS"}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h2 class="section-title">
+        {"RECENT"}
+        <br />
+        <span class="section-title-accent">{"PROJECTS"}</span>
+      </h2>
+      <div class="projects-grid">
+        for (const project of projects) {
+          <div class="project-card">
+            <h3 class="project-title">{project.name}</h3>
+            <p class="project-description">{project.description}</p>
+            <div class="project-tech">
+              for (const tech of project.tech) {
+                <span class="tech-tag">{tech}</span>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section id="experience" class="section">
+      <h2 class="section-title">
+        {"3+ YEARS OF"}
+        <br />
+        <span class="section-title-accent">{"EXPERIENCE"}</span>
+      </h2>
+      <div class="experience-list">
+        <div class="experience-item">
+          <div class="experience-content">
+            <h3 class="experience-company">{"Techverito Software Solutions"}</h3>
+            <p class="experience-role">{"Led the development team in creating robust test automation frameworks and improving software quality processes."}</p>
+            <div class="experience-period">{"Aug 2022 - Present"}</div>
+          </div>
+        </div>
+        <div class="experience-item">
+          <div class="experience-content">
+            <h3 class="experience-company">{"Medline (Contractor)"}</h3>
+            <p class="experience-role">{"Developed and implemented quality assurance strategies for enterprise-level applications, ensuring high-quality software delivery."}</p>
+            <div class="experience-period">{"Feb 2024 - Jun 2025"}</div>
+          </div>
+        </div>
+        <div class="experience-item">
+          <div class="experience-content">
+            <h3 class="experience-company">{"Freelance Projects"}</h3>
+            <p class="experience-role">{"Designed and developed web applications for various clients, focusing on performance and user experience."}</p>
+            <div class="experience-period">{"2021 - 2022"}</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="tools" class="section">
+      <h2 class="section-title">
+        {"TECHNOLOGY"}
+        <br />
+        <span class="section-title-accent">{"TOOLS"}</span>
+      </h2>
+      <div class="tools-grid">
+        for (const skill of skills) {
+          <div class="tool-card">
+            <div class="tool-icon">
+              <Icon name={skill.icon} size={40} />
+            </div>
+            <div class="tool-name">{skill.name}</div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section id="contact" class="section contact-section">
+      <h2 class="section-title">
+        {"LET'S WORK"}
+        <br />
+        <span class="section-title-accent">{"TOGETHER"}</span>
+      </h2>
+      <div class="contact-content">
+        <div class="contact-info">
+          <a href="mailto:ganesh3075@gmail.com" class="contact-link">
+            <span class="contact-label">{"Email"}</span>
+            <span class="contact-value">{"ganesh3075@gmail.com"}</span>
+          </a>
+          <a href="tel:+919404018678" class="contact-link">
+            <span class="contact-label">{"Phone"}</span>
+            <span class="contact-value">{"+91 94040 18678"}</span>
+          </a>
+          <div class="contact-link">
+            <span class="contact-label">{"Location"}</span>
+            <span class="contact-value">{"Pune, Maharashtra"}</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <style>
+    .home {
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hero {
+      padding: 6rem 0 8rem;
+      text-align: center;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .hero-name {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 1rem 0;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .hero-title {
+      font-size: 3.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      margin: 0 0 2rem 0;
+      color: var(--text-secondary);
+      line-height: 1.2;
+      text-transform: uppercase;
+    }
+
+    .hero-description {
+      font-size: 1.25rem;
+      line-height: 1.7;
+      margin: 0 auto 4rem;
+      max-width: 700px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3rem;
+      margin-top: 4rem;
+      padding-top: 4rem;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 3.5rem;
+      font-weight: 800;
+      color: var(--accent-color);
+      margin-bottom: 0.5rem;
+      line-height: 1;
+    }
+
+    .stat-label {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-tertiary);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .section {
+      padding: 8rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .section:last-child {
+      border-bottom: none;
+    }
+
+    .section-title {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 4rem 0;
+      color: var(--text-primary);
+      line-height: 1.1;
+    }
+
+    .section-title-accent {
+      color: var(--accent-color);
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 2.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-color);
+      box-shadow: 0 12px 32px var(--shadow-hover);
+    }
+
+    .project-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 1rem 0;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+
+    .project-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin: 0 0 1.5rem 0;
+      color: var(--text-secondary);
+    }
+
+    .project-tech {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .tech-tag {
+      background: var(--bg-secondary);
+      color: var(--accent-color);
+      padding: 0.375rem 0.875rem;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: 1px solid var(--border-color);
+    }
+
+    .experience-list {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      max-width: 800px;
+    }
+
+    .experience-item {
+      padding: 2.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .experience-item:hover {
+      border-color: var(--accent-color);
+      transform: translateX(8px);
+    }
+
+    .experience-company {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem 0;
+      color: var(--text-primary);
+    }
+
+    .experience-role {
+      font-size: 1rem;
+      line-height: 1.7;
+      margin: 0 0 1rem 0;
+      color: var(--text-secondary);
+    }
+
+    .experience-period {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent-color);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 2rem;
+    }
+
+    .tool-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 24px var(--shadow-hover);
+    }
+
+    .tool-icon {
+      color: var(--accent-color);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .tool-name {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .contact-section {
+      text-align: center;
+    }
+
+    .contact-content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .contact-link {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 0;
+      border-bottom: 1px solid var(--border-color);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s;
+    }
+
+    .contact-link:hover {
+      border-bottom-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+
+    .contact-link:last-child {
+      border-bottom: none;
+    }
+
+    .contact-label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .contact-value {
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 968px) {
+      .hero-name {
+        font-size: 3rem;
+      }
+
+      .hero-title {
+        font-size: 2.5rem;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .section-title {
+        font-size: 3rem;
+      }
+
+      .projects-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .tools-grid {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 4rem 0 6rem;
+      }
+
+      .hero-name {
+        font-size: 2.5rem;
+      }
+
+      .hero-title {
+        font-size: 2rem;
+      }
+
+      .hero-description {
+        font-size: 1.125rem;
+      }
+
+      .section {
+        padding: 4rem 0;
+      }
+
+      .section-title {
+        font-size: 2.5rem;
+      }
+
+      .stat-number {
+        font-size: 2.5rem;
+      }
+
+      .contact-link {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+}

@@ -1,0 +1,73 @@
+import { track, effect } from 'ripple';
+import type { Component } from 'ripple';
+
+interface IconProps {
+  name: string;
+  size?: number;
+  class?: string;
+}
+
+export component Icon(props: IconProps) {
+  const size = props.size || 24;
+  let svgContent = track<string | null>(null);
+  let hasError = track(false);
+  
+  // Map icon names to devicons/techicons names
+  const iconMap: Record<string, string> = {
+    java: 'java',
+    javascript: 'javascript',
+    typescript: 'typescript',
+    mongodb: 'mongodb',
+    aws: 'amazonwebservices',
+    terraform: 'terraform',
+    react: 'react',
+    nodejs: 'nodejs',
+    git: 'git'
+  };
+
+  const iconName = iconMap[props.name.toLowerCase()] || props.name.toLowerCase();
+  const iconType = props.name.toLowerCase() === "aws" ? "plain-wordmark" : "original";
+  const iconUrl = `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${iconName}/${iconName}-${iconType}.svg`;
+
+  effect(() => {
+    // Fetch SVG content
+    fetch(iconUrl)
+      .then(response => {
+        if (!response.ok) throw new Error('Failed to fetch');
+        return response.text();
+      })
+      .then(svg => {
+        @svgContent = svg;
+        @hasError = false;
+      })
+      .catch(() => {
+        @hasError = true;
+      });
+  });
+
+  if (@svgContent && !@hasError) {
+    const processedSvg = @svgContent.replace(/<svg/, `<svg width="${size}" height="${size}" style="color: currentColor;"`);
+    <span 
+      class={props.class}
+      style={`display: inline-flex; width: ${size}px; height: ${size}px; color: var(--text-primary);`}
+    >
+      {html processedSvg}
+    </span>
+  } else if (@hasError) {
+    // Fallback: show icon name
+    <span 
+      class={['icon-fallback', props.class].filter(Boolean).join(' ')}
+      style={`width: ${size}px; height: ${size}px; display: inline-flex; align-items: center; justify-content: center; font-size: ${size * 0.6}px; font-weight: 600; color: var(--accent-color);`}
+    >
+      {props.name.charAt(0).toUpperCase()}
+    </span>
+  }
+
+  <style>
+    .icon-fallback {
+      background: var(--bg-secondary);
+      border-radius: 4px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+  </style>
+}

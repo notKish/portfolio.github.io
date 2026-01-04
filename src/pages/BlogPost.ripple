@@ -1,0 +1,532 @@
+import { track, effect } from 'ripple';
+import { blogPosts } from '../data/blog';
+import { renderMarkdown } from '../lib/markdown';
+
+export component BlogPost(props: { 
+  postId: string;
+  navigate: (page: 'home' | 'blog', postId?: string) => void;
+}) {
+  const postId = track(props.postId);
+  const htmlContent = track<string>('');
+  
+  // Update postId when props change
+  effect(() => {
+    @postId = props.postId;
+  });
+  
+  // Render markdown when post changes
+  effect(() => {
+    const currentPost = blogPosts.find(p => p.id === @postId);
+    if (currentPost) {
+      // Wait for highlight.js to be available
+      const checkHighlight = setInterval(() => {
+        if ((window as any).hljs) {
+          clearInterval(checkHighlight);
+          @htmlContent = renderMarkdown(currentPost.content);
+          
+          // Wait for Ripple to render the HTML, then highlight code blocks
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              if ((window as any).hljs) {
+                // Find all code blocks and highlight them
+                const codeBlocks = document.querySelectorAll('.post-body pre code');
+                codeBlocks.forEach((block: HTMLElement) => {
+                  if (!block.classList.contains('hljs')) {
+                    (window as any).hljs.highlightElement(block);
+                  }
+                });
+              }
+              
+              // Add copy buttons
+              addCopyButtons();
+            });
+          });
+        }
+      }, 50);
+      
+      // Timeout after 5 seconds
+      setTimeout(() => clearInterval(checkHighlight), 5000);
+    } else {
+      @htmlContent = '';
+    }
+  });
+  
+  function addCopyButtons() {
+    const codeBlocks = document.querySelectorAll('.post-body pre');
+    codeBlocks.forEach((pre) => {
+      // Skip if already has copy button
+      if (pre.querySelector('.copy-button')) return;
+      
+      const code = pre.querySelector('code');
+      if (!code) return;
+      
+      const copyButton = document.createElement('button');
+      copyButton.className = 'copy-button';
+      copyButton.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+      copyButton.title = 'Copy code';
+      
+      copyButton.addEventListener('click', async () => {
+        const text = code.textContent || '';
+        try {
+          await navigator.clipboard.writeText(text);
+          copyButton.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+          copyButton.title = 'Copied!';
+          setTimeout(() => {
+            copyButton.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>';
+            copyButton.title = 'Copy code';
+          }, 2000);
+        } catch (err) {
+          console.error('Failed to copy:', err);
+        }
+      });
+      
+      pre.style.position = 'relative';
+      pre.appendChild(copyButton);
+    });
+  }
+
+  const currentPost = blogPosts.find(p => p.id === @postId);
+  
+  if (!currentPost) {
+    <div class="blog-post error">
+      <div class="error-content">
+        <h1>{"Post Not Found"}</h1>
+        <p>{"The blog post you're looking for doesn't exist."}</p>
+        <button class="btn btn-primary" onClick={() => props.navigate('blog')}>
+          {"Back to Blog"}
+        </button>
+      </div>
+    </div>
+  } else {
+    <div class="blog-post">
+      <button class="back-button" onClick={() => props.navigate('blog')}>
+        {"← Back to Thoughts"}
+      </button>
+
+      <article class="post-content">
+        <header class="post-header">
+          <time class="post-date">
+            {new Date(currentPost.date).toLocaleDateString('en-US', { 
+              year: 'numeric', 
+              month: 'long', 
+              day: 'numeric' 
+            })}
+          </time>
+          <h1 class="post-title">{currentPost.title}</h1>
+          <p class="post-excerpt">{currentPost.excerpt}</p>
+        </header>
+
+        <div class="post-body">
+          {html @htmlContent}
+        </div>
+      </article>
+    </div>
+  }
+
+  <style>
+    .blog-post {
+      animation: fadeIn 0.6s ease-in;
+      max-width: 900px;
+      margin: 0 auto;
+      padding-top: 4rem;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .back-button {
+      background: transparent;
+      border: none;
+      padding: 0.75rem 0;
+      border-radius: 0;
+      font-size: 0.9375rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      margin-bottom: 3rem;
+      transition: all 0.2s;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .back-button:hover {
+      transform: translateX(-4px);
+      color: var(--accent-color);
+    }
+
+    .post-content {
+      background: var(--bg-card);
+      border-radius: 0;
+      padding: 4rem;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 2px 20px var(--shadow);
+      transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .post-header {
+      margin-bottom: 4rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid var(--border-color);
+      transition: border-color 0.3s ease;
+    }
+
+    .post-date {
+      color: var(--accent-color);
+      font-size: 0.875rem;
+      font-weight: 600;
+      display: block;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color 0.3s ease;
+    }
+
+    .post-title {
+      font-size: 3.5rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin: 0 0 1.5rem 0;
+      color: var(--text-primary);
+      line-height: 1.2;
+      transition: color 0.3s ease;
+    }
+
+    .post-excerpt {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+      margin: 0;
+      font-weight: 400;
+      transition: color 0.3s ease;
+    }
+
+    .post-body {
+      color: var(--text-primary);
+      line-height: 1.8;
+      transition: color 0.3s ease;
+      font-size: 1.125rem;
+    }
+
+    /* Markdown content styling */
+    .post-body :global(h1),
+    .post-body :global(h2),
+    .post-body :global(h3),
+    .post-body :global(h4) {
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .post-body :global(h1) {
+      font-size: 2rem;
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 0.5rem;
+    }
+
+    .post-body :global(h2) {
+      font-size: 1.75rem;
+    }
+
+    .post-body :global(h3) {
+      font-size: 1.5rem;
+    }
+
+    .post-body :global(p) {
+      margin-bottom: 1.5rem;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+    }
+
+    .post-body :global(code) {
+      background: var(--bg-secondary);
+      color: var(--accent-color);
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      font-size: 0.9em;
+      font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
+      font-weight: 500;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      border: 1px solid var(--border-color);
+      display: inline-block;
+    }
+
+    .post-body :global(pre) {
+      background: var(--code-bg);
+      color: var(--code-text);
+      padding: 1.5rem;
+      padding-top: 3rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+      border: 1px solid var(--code-border);
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      position: relative;
+      line-height: 1.6;
+      font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
+    }
+
+    .post-body :global(.copy-button) {
+      position: absolute;
+      top: 0.75rem;
+      right: 0.75rem;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      padding: 0.5rem;
+      cursor: pointer;
+      color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      opacity: 0.7;
+      z-index: 10;
+    }
+
+    .post-body :global(.copy-button:hover) {
+      opacity: 1;
+      background: var(--accent-color);
+      color: var(--bg-primary);
+      border-color: var(--accent-color);
+      transform: scale(1.05);
+    }
+
+    .post-body :global(.copy-button:active) {
+      transform: scale(0.95);
+    }
+
+    .post-body :global(.copy-button svg) {
+      display: block;
+      width: 16px;
+      height: 16px;
+    }
+
+    .post-body :global(pre::-webkit-scrollbar) {
+      height: 8px;
+    }
+
+    .post-body :global(pre::-webkit-scrollbar-track) {
+      background: var(--code-bg);
+      border-radius: 4px;
+    }
+
+    .post-body :global(pre::-webkit-scrollbar-thumb) {
+      background: var(--border-color);
+      border-radius: 4px;
+      transition: background 0.3s ease;
+    }
+
+    .post-body :global(pre::-webkit-scrollbar-thumb:hover) {
+      background: var(--accent-color);
+    }
+
+    .post-body :global(pre code) {
+      background: none !important;
+      color: inherit !important;
+      padding: 0 !important;
+      border: none !important;
+      border-radius: 0 !important;
+      font-size: 0.95em;
+      font-weight: 400;
+      font-family: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Fira Mono', 'Droid Sans Mono', 'Source Code Pro', monospace;
+      display: block;
+      white-space: pre;
+      overflow-x: auto;
+      word-wrap: normal;
+    }
+    
+    /* Ensure inline code doesn't get highlight.js styles */
+    .post-body :global(p code),
+    .post-body :global(li code),
+    .post-body :global(td code) {
+      background: var(--bg-secondary) !important;
+      color: var(--accent-color) !important;
+    }
+    
+    /* Ensure pre code gets proper highlighting */
+    .post-body :global(pre code.hljs) {
+      background: transparent !important;
+    }
+    
+
+    .post-body :global(ul),
+    .post-body :global(ol) {
+      margin: 1.5rem 0;
+      padding-left: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .post-body :global(li) {
+      margin-bottom: 0.5rem;
+      color: var(--text-secondary);
+    }
+
+    .post-body :global(blockquote) {
+      border-left: 4px solid var(--accent-color);
+      margin: 1.5rem 0;
+      color: var(--text-secondary);
+      font-style: italic;
+      background: var(--bg-secondary);
+      padding: 1.5rem 2rem;
+      border-radius: 0 8px 8px 0;
+      transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+      border-right: 1px solid var(--border-color);
+      border-top: 1px solid var(--border-color);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .post-body :global(a) {
+      color: var(--accent-color);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s, color 0.3s ease;
+      font-weight: 500;
+    }
+
+    .post-body :global(a:hover) {
+      border-bottom-color: var(--accent-color);
+    }
+
+    .post-body :global(strong) {
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .post-body :global(em) {
+      font-style: italic;
+    }
+
+    .post-body :global(table) {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 1.5rem 0;
+      border: 1px solid var(--border-color);
+      transition: border-color 0.3s ease;
+    }
+
+    .post-body :global(th),
+    .post-body :global(td) {
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1rem;
+      text-align: left;
+      transition: border-color 0.3s ease, background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .post-body :global(th) {
+      background: var(--bg-secondary);
+      font-weight: 600;
+      color: var(--text-primary);
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .post-body :global(tr:nth-child(even)) {
+      background-color: var(--bg-secondary);
+      transition: background-color 0.3s ease;
+    }
+
+    .post-body :global(hr) {
+      border: none;
+      border-top: 1px solid var(--border-color);
+      margin: 2rem 0;
+    }
+
+    .error {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 60vh;
+    }
+
+    .error-content {
+      background: var(--bg-card);
+      backdrop-filter: blur(10px);
+      border-radius: 16px;
+      padding: 3rem;
+      text-align: center;
+      box-shadow: 0 4px 20px var(--shadow);
+      border: 1px solid var(--border-color);
+      transition: background-color 0.3s ease, border-color 0.3s ease;
+    }
+
+    .error-content h1 {
+      font-size: 2rem;
+      margin: 0 0 1rem 0;
+      color: var(--text-primary);
+    }
+
+    .error-content p {
+      color: var(--text-secondary);
+      margin: 0 0 2rem 0;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: var(--accent-color);
+      color: var(--bg-primary);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px var(--shadow-hover);
+    }
+
+    @media (max-width: 968px) {
+      .blog-post {
+        max-width: 100%;
+      }
+
+      .post-content {
+        padding: 3rem 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .post-title {
+        font-size: 2.5rem;
+      }
+
+      .post-excerpt {
+        font-size: 1.125rem;
+      }
+
+      .post-header {
+        margin-bottom: 3rem;
+        padding-bottom: 2rem;
+      }
+
+      .post-content {
+        padding: 2rem 1.5rem;
+      }
+
+      .post-body {
+        font-size: 1rem;
+      }
+    }
+  </style>
+}
+
