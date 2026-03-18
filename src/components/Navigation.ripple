@@ -8,115 +8,128 @@ export component Navigation(props: {
   theme: Theme;
   toggleTheme: () => void;
 }) {
-  <nav class="nav">
-    <div class="nav-container">
+  <nav class="sidebar">
+    <div class="sidebar-header">
       <div class="logo" onClick={() => props.navigate('home')}>
-        {"<GW />"}
+        {"GANESH WALUNJ"}
       </div>
-      <div class="nav-right">
-        <div class="nav-links">
-          <button 
-            class={['nav-link', { active: props.currentPage === 'home' }]}
-            onClick={() => props.navigate('home')}
-          >
-            {"Home"}
-          </button>
-          <button 
-            class={['nav-link', { active: props.currentPage === 'blog' || props.currentPage === 'post' }]}
-            onClick={() => props.navigate('blog')}
-          >
-            {"Thoughts"}
-          </button>
-        </div>
-        <ThemeToggle theme={props.theme} toggle={props.toggleTheme} />
-      </div>
+      <div class="title">{"SOFTWARE ENGINEER"}</div>
+    </div>
+
+    <div class="nav-links">
+      <button 
+        class="nav-link"
+        onClick={() => {
+          document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      >
+        {"Projects"}
+      </button>
+      <button 
+        class="nav-link"
+        onClick={() => {
+          document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      >
+        {"Experience"}
+      </button>
+      <button 
+        class="nav-link"
+        onClick={() => {
+          document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      >
+        {"Tools"}
+      </button>
+      <button 
+        class="nav-link"
+        onClick={() => {
+          document.getElementById('certifications')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      >
+        {"Certifications"}
+      </button>
+      <button 
+        class="nav-link"
+        onClick={() => {
+          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+      >
+        {"Contact"}
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button 
+        class="nav-link"
+        onClick={() => props.navigate('blog')}
+      >
+        {"Thoughts"}
+      </button>
+      <ThemeToggle theme={props.theme} toggle={props.toggleTheme} />
     </div>
   </nav>
 
   <style>
-    .nav {
-      background: var(--bg-primary);
+    .sidebar {
       position: sticky;
       top: 0;
-      z-index: 100;
-      border-bottom: 1px solid var(--border-color);
-      transition: background-color 0.3s ease, border-color 0.3s ease;
+      height: 100vh;
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border-right: 1px solid var(--border-color);
+      background: var(--bg-primary);
     }
 
-    .nav-container {
-      max-width: 1400px;
-      margin: 0 auto;
-      padding: 2rem 3rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+    .sidebar-header {
+      margin-bottom: 2rem;
     }
 
     .logo {
-      font-size: 1.25rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text-primary);
       cursor: pointer;
-      transition: transform 0.2s, color 0.2s;
-      letter-spacing: 0.02em;
-      border-radius: 4px;
+      line-height: 1.3;
+      transition: color 0.2s;
     }
 
     .logo:hover {
-      transform: scale(1.05);
-      color: var(--accent-hover);
+      color: var(--accent-color);
     }
 
-    .logo:focus-visible {
-      outline: var(--focus-ring);
-      outline-offset: var(--focus-offset);
-      transform: scale(1.05);
-      color: var(--accent-hover);
-    }
-
-    .nav-right {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
+    .title {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.25rem;
     }
 
     .nav-links {
       display: flex;
-      gap: 0.5rem;
+      flex-direction: column;
+      gap: 0.25rem;
     }
 
     .nav-link {
       background: none;
       border: none;
-      padding: 0.5rem 1rem;
-      font-size: 0.9375rem;
+      padding: 0.625rem 0.75rem;
+      font-size: 0.8125rem;
       color: var(--text-secondary);
       cursor: pointer;
-      border-radius: 0;
+      border-radius: 6px;
+      text-align: left;
       transition: all 0.2s;
-      position: relative;
       font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
     }
 
     .nav-link:hover {
+      background: var(--bg-secondary);
       color: var(--text-primary);
-    }
-
-    .nav-link.active {
-      color: var(--text-primary);
-      font-weight: 600;
-    }
-
-    .nav-link.active::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 1rem;
-      right: 1rem;
-      height: 2px;
-      background: var(--accent-color);
     }
 
     .nav-link:focus-visible {
@@ -124,24 +137,49 @@ export component Navigation(props: {
       outline-offset: var(--focus-offset);
     }
 
+    .sidebar-footer {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+
     @media (max-width: 768px) {
-      .nav-container {
+      .sidebar {
+        position: sticky;
+        top: 0;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
         padding: 1rem;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        flex-wrap: wrap;
+        gap: 0.5rem;
       }
 
-      .logo {
-        font-size: 1.25rem;
+      .sidebar-header {
+        margin-bottom: 0;
+      }
+
+      .nav-links {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 0.25rem;
       }
 
       .nav-link {
-        padding: 0.5rem 1rem;
-        font-size: 0.9rem;
+        padding: 0.5rem 0.625rem;
+        font-size: 0.75rem;
       }
 
-      .nav-right {
-        gap: 0.5rem;
+      .sidebar-footer {
+        border-top: none;
+        padding-top: 0;
+        flex-direction: row;
+        align-items: center;
       }
     }
   </style>
 }
-

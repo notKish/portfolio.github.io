@@ -18,12 +18,20 @@ export component Icon(props: IconProps) {
     java: 'java',
     javascript: 'javascript',
     typescript: 'typescript',
+    python: 'python',
     mongodb: 'mongodb',
     aws: 'amazonwebservices',
     terraform: 'terraform',
     react: 'react',
     nodejs: 'nodejs',
-    git: 'git'
+    git: 'git',
+    jenkins: 'jenkins',
+    docker: 'docker',
+    postman: 'postman',
+    selenium: 'selenium',
+    'rest-assured': 'rest-assured',
+    langchain: 'langchain',
+    langgraph: 'langgraph'
   };
 
   const iconName = iconMap[props.name.toLowerCase()] || props.name.toLowerCase();
