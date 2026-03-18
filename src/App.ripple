@@ -53,6 +53,8 @@ export component App() {
     .main-content {
       padding: 1rem;
       max-width: 100%;
+      width: 100%;
+      margin: 0 auto;
       overflow-x: hidden;
     }
 
@@ -63,6 +65,19 @@ export component App() {
 
       .main-content {
         padding: 1rem;
+        max-width: 100%;
+      }
+    }
+
+    @media (min-width: 769px) {
+      .main-content {
+        max-width: 900px;
+      }
+    }
+
+    @media (min-width: 1200px) {
+      .main-content {
+        max-width: 1000px;
       }
     }
   </style>
