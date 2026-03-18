@@ -136,7 +136,7 @@ export component Home(props: { theme: Theme }) {
     }
 
     .section {
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
     }
 
     .section-title {
