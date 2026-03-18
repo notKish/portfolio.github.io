@@ -41,7 +41,7 @@ export component Blog(props: { navigate: (page: 'home' | 'blog', postId?: string
     }
 
     .blog-header {
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
     }
 
     .blog-title {
