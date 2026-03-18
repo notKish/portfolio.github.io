@@ -20,7 +20,12 @@ export component Navigation(props: {
       <button 
         class="nav-link"
         onClick={() => {
-          document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+          if (props.currentPage !== 'home') {
+            props.navigate('home');
+            setTimeout(() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }), 100);
+          } else {
+            document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+          }
         }}
       >
         {"Projects"}
@@ -28,7 +33,12 @@ export component Navigation(props: {
       <button 
         class="nav-link"
         onClick={() => {
-          document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+          if (props.currentPage !== 'home') {
+            props.navigate('home');
+            setTimeout(() => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' }), 100);
+          } else {
+            document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+          }
         }}
       >
         {"Experience"}
@@ -36,7 +46,12 @@ export component Navigation(props: {
       <button 
         class="nav-link"
         onClick={() => {
-          document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' });
+          if (props.currentPage !== 'home') {
+            props.navigate('home');
+            setTimeout(() => document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' }), 100);
+          } else {
+            document.getElementById('tools')?.scrollIntoView({ behavior: 'smooth' });
+          }
         }}
       >
         {"Tools"}
@@ -44,7 +59,12 @@ export component Navigation(props: {
       <button 
         class="nav-link"
         onClick={() => {
-          document.getElementById('certifications')?.scrollIntoView({ behavior: 'smooth' });
+          if (props.currentPage !== 'home') {
+            props.navigate('home');
+            setTimeout(() => document.getElementById('certifications')?.scrollIntoView({ behavior: 'smooth' }), 100);
+          } else {
+            document.getElementById('certifications')?.scrollIntoView({ behavior: 'smooth' });
+          }
         }}
       >
         {"Certifications"}
@@ -52,7 +72,12 @@ export component Navigation(props: {
       <button 
         class="nav-link"
         onClick={() => {
-          document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          if (props.currentPage !== 'home') {
+            props.navigate('home');
+            setTimeout(() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }), 100);
+          } else {
+            document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+          }
         }}
       >
         {"Contact"}
