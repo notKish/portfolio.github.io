@@ -5,6 +5,7 @@ interface IconProps {
   name: string;
   size?: number;
   class?: string;
+  ariaLabel?: string;
 }
 
 export component Icon(props: IconProps) {
@@ -49,14 +50,17 @@ export component Icon(props: IconProps) {
     const processedSvg = @svgContent.replace(/<svg/, `<svg width="${size}" height="${size}" style="color: currentColor;"`);
     <span 
       class={props.class}
+      role="img"
+      aria-label={props.ariaLabel || props.name}
       style={`display: inline-flex; width: ${size}px; height: ${size}px; color: var(--text-primary);`}
     >
       {html processedSvg}
     </span>
   } else if (@hasError) {
-    // Fallback: show icon name
     <span 
       class={['icon-fallback', props.class].filter(Boolean).join(' ')}
+      role="img"
+      aria-label={props.ariaLabel || props.name}
       style={`width: ${size}px; height: ${size}px; display: inline-flex; align-items: center; justify-content: center; font-size: ${size * 0.6}px; font-weight: 600; color: var(--accent-color);`}
     >
       {props.name.charAt(0).toUpperCase()}

@@ -57,6 +57,14 @@ export component ThemeToggle(props: { theme: 'light' | 'dark'; toggle: () => voi
       transform: scale(1.05);
     }
 
+    .theme-toggle:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: var(--focus-offset);
+      background: var(--bg-card);
+      border-color: var(--accent-color);
+      color: var(--accent-color);
+    }
+
     .theme-icon {
       transition: opacity 0.2s;
     }

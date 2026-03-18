@@ -252,6 +252,17 @@ export component Home(props: { theme: Theme }) {
       box-shadow: 0 12px 32px var(--shadow-hover);
     }
 
+    .project-card:focus-within {
+      transform: translateY(-4px);
+      border-color: var(--accent-color);
+      box-shadow: 0 12px 32px var(--shadow-hover);
+    }
+
+    .project-card:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: var(--focus-offset);
+    }
+
     .project-title {
       font-size: 1.5rem;
       font-weight: 700;
@@ -345,6 +356,14 @@ export component Home(props: { theme: Theme }) {
     }
 
     .tool-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-color);
+      box-shadow: 0 8px 24px var(--shadow-hover);
+    }
+
+    .tool-card:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: var(--focus-offset);
       transform: translateY(-4px);
       border-color: var(--accent-color);
       box-shadow: 0 8px 24px var(--shadow-hover);

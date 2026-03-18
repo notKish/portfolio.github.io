@@ -32,6 +32,17 @@
         text-rendering: optimizeLegibility;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        --focus-ring: 2px solid var(--accent-color);
+        --focus-offset: 2px;
+      }
+      
+      :focus-visible {
+        outline: var(--focus-ring);
+        outline-offset: var(--focus-offset);
+      }
+      
+      :focus:not(:focus-visible) {
+        outline: none;
       }
       
       :root[data-theme="light"] {

@@ -59,9 +59,17 @@ export component Navigation(props: {
       cursor: pointer;
       transition: transform 0.2s, color 0.2s;
       letter-spacing: 0.02em;
+      border-radius: 4px;
     }
 
     .logo:hover {
+      transform: scale(1.05);
+      color: var(--accent-hover);
+    }
+
+    .logo:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: var(--focus-offset);
       transform: scale(1.05);
       color: var(--accent-hover);
     }
@@ -109,6 +117,11 @@ export component Navigation(props: {
       right: 1rem;
       height: 2px;
       background: var(--accent-color);
+    }
+
+    .nav-link:focus-visible {
+      outline: var(--focus-ring);
+      outline-offset: var(--focus-offset);
     }
 
     @media (max-width: 768px) {
