@@ -2,6 +2,7 @@ export interface Project {
   name: string;
   description: string;
   tech: string[];
+  url?: string;
 }
 
 export const projects: Project[] = [

@@ -42,7 +42,13 @@ export component Home(props: { theme: Theme }) {
       </h2>
       <div class="projects-grid">
         for (const project of projects) {
-          <div class="project-card">
+          <a 
+            href={project.url || '#'} 
+            class="project-card" 
+            target={project.url ? '_blank' : undefined}
+            rel={project.url ? 'noopener noreferrer' : undefined}
+            tabIndex={project.url ? 0 : -1}
+          >
             <h3 class="project-title">{project.name}</h3>
             <p class="project-description">{project.description}</p>
             <div class="project-tech">
@@ -50,7 +56,7 @@ export component Home(props: { theme: Theme }) {
                 <span class="tech-tag">{tech}</span>
               }
             </div>
-          </div>
+          </a>
         }
       </div>
     </section>
@@ -244,6 +250,9 @@ export component Home(props: { theme: Theme }) {
       padding: 2.5rem;
       transition: all 0.3s ease;
       cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+      display: block;
     }
 
     .project-card:hover {
