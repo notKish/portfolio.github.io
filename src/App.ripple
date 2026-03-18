@@ -51,7 +51,7 @@ export component App() {
     }
 
     .main-content {
-      padding: 2rem;
+      padding: 1rem;
       max-width: 100%;
       overflow-x: hidden;
     }
