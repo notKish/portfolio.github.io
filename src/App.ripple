@@ -26,10 +26,6 @@ export component App() {
     updateTheme(@theme);
   }
 
-  effect(() => {
-    updateTheme(@theme);
-  });
-
   <div class="app">
     <Navigation navigate={navigate} currentPage={@currentPage} theme={@theme} toggleTheme={toggleTheme} />
     
